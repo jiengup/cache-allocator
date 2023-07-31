@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <unordered_set>
+#include <algorithm>
+#include <limits.h>
 
 namespace CacheAllocation
 {
@@ -18,6 +20,9 @@ namespace CacheAllocation
     unsigned long hit_cnt = 0;
     unsigned long long req_bytes = 0;
     unsigned long long hit_bytes = 0;
+    
+    unsigned long long max_req = 0;
+    unsigned long long min_req;
 
     std::unordered_set<uint64_t> *obj_cnt;
     unsigned long long working_set_bytes = 0;
@@ -26,12 +31,13 @@ namespace CacheAllocation
         : server_id(server_id), req_cnt(0), hit_cnt(0)
     {
       obj_cnt = new std::unordered_set<uint64_t>();
+	  min_req = ULLONG_MAX;
     };
 
     static std::string stat_str_header()
     {
       return "#server_id, hit_cnt/req_cnt, hit_bytes/req_bytes, "
-             "working_set_size/working_set_bytes, "
+             "min_req/max_req, working_set_size/working_set_bytes, "
              "omr/bmr";
     }
     std::string stat_str()
@@ -39,7 +45,7 @@ namespace CacheAllocation
       std::stringstream ss;
       ss.precision(6);
       ss << server_id << ", " << hit_cnt << "/" << req_cnt << ", "
-         << hit_bytes << "/" << req_bytes << ", "
+         << hit_bytes << "/" << req_bytes << ", " << min_req << "/" << max_req << ", "
          << obj_cnt->size() << "/" << working_set_bytes << ", "
          << (double)hit_cnt / (double)req_cnt << "/" << (double)hit_bytes / (double)req_bytes;
       return ss.str();
@@ -71,6 +77,8 @@ namespace CacheAllocation
       hit_bytes += req->obj_size;
       req_cnt++;
       req_bytes += req->obj_size;
+      max_req = std::max(max_req, (unsigned long long)req->obj_size);
+	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
 
     inline void miss_record(const request_t *req)
@@ -82,6 +90,8 @@ namespace CacheAllocation
       }
       req_cnt++;
       req_bytes += req->obj_size;
+      max_req = std::max(max_req, (unsigned long long)req->obj_size);
+	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
   };
 
@@ -95,6 +105,9 @@ namespace CacheAllocation
     unsigned long long cluster_req_bytes = 0;
     unsigned long long cluster_hit_bytes = 0;
 
+    unsigned long long max_req = 0;
+	unsigned long long min_req;
+
     std::unordered_set<uint64_t> *obj_cnt;
     unsigned long long working_set_bytes = 0;
 
@@ -102,6 +115,7 @@ namespace CacheAllocation
         : cluster_id(cluster_id)
     {
       obj_cnt = new std::unordered_set<uint64_t>();
+      min_req = ULLONG_MAX;
     }
 
     CacheClusterStat(const CacheClusterStat &stat) = delete;
@@ -115,7 +129,7 @@ namespace CacheAllocation
     static std::string stat_str_header(bool with_server = false)
     {
       return "#cluster_id, hit_cnt/req_cnt, hit_bytes/req_bytes, "
-             "working_set_size/working_set_bytes, "
+             "min_req/max_req, working_set_size/working_set_bytes, "
              "omr/bmr";
     }
 
@@ -124,7 +138,7 @@ namespace CacheAllocation
       std::stringstream ss;
       ss.precision(6);
       ss << cluster_id << ", " << cluster_hit_cnt << "/" << cluster_req_cnt << ", "
-         << cluster_hit_bytes << "/" << cluster_req_bytes << ", "
+         << cluster_hit_bytes << "/" << cluster_req_bytes << ", " << min_req << "/" << max_req << ", "
          << obj_cnt->size() << "/" << working_set_bytes << ", "
          << (double)cluster_hit_cnt / (double)cluster_req_cnt << "/" << (double)cluster_hit_bytes / (double)cluster_req_bytes << ", ";
       return ss.str();
@@ -141,6 +155,8 @@ namespace CacheAllocation
       cluster_hit_bytes += req->obj_size;
       cluster_req_cnt++;
       cluster_req_bytes += req->obj_size;
+      max_req = std::max(max_req, (unsigned long long)req->obj_size);
+	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
 
     inline void miss_record(const request_t *req)
@@ -152,6 +168,8 @@ namespace CacheAllocation
       }
       cluster_req_cnt++;
       cluster_req_bytes += req->obj_size;
+      max_req = std::max(max_req, (unsigned long long)req->obj_size);
+	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
   };
 } // namespace CacheAllocation
