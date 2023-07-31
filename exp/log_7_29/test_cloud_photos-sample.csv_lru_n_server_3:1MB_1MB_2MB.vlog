@@ -1,0 +1,2 @@
+#--name test -a lru -f ../dataset/cloud_photos-sample/cloud_photos-sample.csv --total-cache-size 4096 --server-cache-sizes=1024,1024,2048 -n 3 -t cloudphoto -l 300
+#vtime, #cluster_id, hit_cnt/req_cnt, hit_bytes/req_bytes, used_cache_size/total_cache_size, working_set_size/working_set_bytesomr/bmr, #server_id, hit_cnt/req_cnt, hit_bytes/req_bytes, working_set_size/working_set_bytesomr/bmr, #server_id, hit_cnt/req_cnt, hit_bytes/req_bytes, working_set_size/working_set_bytesomr/bmr, #server_id, hit_cnt/req_cnt, hit_bytes/req_bytes, working_set_size/working_set_bytesomr/bmr

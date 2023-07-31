@@ -1,0 +1,1 @@
+#vtime, #cluster_id, hit_cnt/req_cnt, hit_bytes/req_bytes, working_set_size/working_set_bytes, omr/bmr, used_cache_size/total_cache_size, #server_id, hit_cnt/req_cnt, hit_bytes/req_bytes, working_set_size/working_set_bytes, omr/bmr, used_cache_size/total_cache_size
