@@ -106,9 +106,6 @@ bool parse_cmd_arg(int argc, char *argv[],
   tm *ltm = localtime(&t);
 
   sargs->log_interval = 300;
-  sargs->log_folder = "log_" + std::to_string(ltm->tm_mon + 1) + "_" +
-                      std::to_string(ltm->tm_mday);
-  mkdir(sargs->log_folder.c_str(), 0770);
   try
   {
     std::unique_ptr<cxxopts::Options> allocated(new cxxopts::Options(argv[0], "Run Cache Allocation experiment"));
@@ -134,6 +131,7 @@ bool parse_cmd_arg(int argc, char *argv[],
       ("n,servers", "number of cache servers", cxxopts::value<unsigned long>(sargs->n_server))
       ("t,trace-type", "the type of trace[akamai1b/cloudphoto]", cxxopts::value<std::string>(sargs->trace_type))
       ("l,log-internal", "the log output interval in virtual time", cxxopts::value<unsigned long>(sargs->log_interval))
+      ("o,log-folder", "path of the output folder", cxxopts::value<std::string>(sargs->log_folder))
     ;
 
     auto result = options.parse(argc, argv);
@@ -144,6 +142,10 @@ bool parse_cmd_arg(int argc, char *argv[],
       std::cout << options.help({""}) << std::endl;
       return false;
     }
+
+    sargs->log_folder += "/log_" + std::to_string(ltm->tm_mon + 1) + "_" +
+                      std::to_string(ltm->tm_mday);
+    mkdir(sargs->log_folder.c_str(), 0770);
 
     sargs->server_cache_size = convert_size(server_cache_size);
     sargs->server_cache_sizes = new unsigned long[sargs->n_server];

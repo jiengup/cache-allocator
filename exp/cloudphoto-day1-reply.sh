@@ -6,4 +6,5 @@
 --server-cache-sizes=256g,256g,256g,256g,256g,256g \
 -n 6 \
 -t cloudphoto \
--l 60
+-l 60 \
+-o /data1/logs
