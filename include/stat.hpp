@@ -38,10 +38,10 @@ namespace CacheAllocation
     {
       std::stringstream ss;
       ss.precision(6);
-      ss << server_id << ", \t" << hit_cnt << "/" << req_cnt << ", \t"
-         << hit_bytes << "/" << req_bytes << ", \t"
-         << obj_cnt->size() << "/" << working_set_bytes << ", \t"
-         << (double)hit_cnt / (double)req_cnt << "/" << (double)hit_bytes / (double)req_bytes << ", \t";
+      ss << server_id << ", " << hit_cnt << "/" << req_cnt << ", "
+         << hit_bytes << "/" << req_bytes << ", "
+         << obj_cnt->size() << "/" << working_set_bytes << ", "
+         << (double)hit_cnt / (double)req_cnt << "/" << (double)hit_bytes / (double)req_bytes;
       return ss.str();
     }
 
@@ -123,10 +123,10 @@ namespace CacheAllocation
     {
       std::stringstream ss;
       ss.precision(6);
-      ss << cluster_id << ", \t" << cluster_hit_cnt << "/" << cluster_req_cnt << ", \t"
-         << cluster_hit_bytes << "/" << cluster_req_bytes << ", \t"
-         << obj_cnt->size() << "/" << working_set_bytes << ", \t"
-         << (double)cluster_hit_cnt / (double)cluster_req_cnt << "/" << (double)cluster_hit_bytes / (double)cluster_req_bytes << ", \t";
+      ss << cluster_id << ", " << cluster_hit_cnt << "/" << cluster_req_cnt << ", "
+         << cluster_hit_bytes << "/" << cluster_req_bytes << ", "
+         << obj_cnt->size() << "/" << working_set_bytes << ", "
+         << (double)cluster_hit_cnt / (double)cluster_req_cnt << "/" << (double)cluster_hit_bytes / (double)cluster_req_bytes << ", ";
       return ss.str();
     }
 
