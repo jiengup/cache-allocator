@@ -76,6 +76,7 @@ void run_exp(int argc, char *argv[])
         args.param_string += std::string(argv[i]) + " ";
     }
     args.param_string.pop_back();
+    args.param_string += "\n";
     if (ok) 
     {
         CacheAllocation::ExpRunner *exp_runner = new CacheAllocation::ExpRunner(&args);
