@@ -25,10 +25,6 @@ message(STATUS "glib found? ${GLib_FOUNT}, lib = ${GLib_LIBRARY}, header = ${GLi
 set(HEADERS ${HEADERS} ${GLib_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${GLib_LIBRARY})
 
-find_package(Boost REQUIRED)
-message(STATUS "boost found? " ${Boost_FOUND} ", library " ${Boost_LIBRARIES} ", header " ${Boost_INCLUDE_DIRS})
-include_directories(${Boost_INCLUDE_DIRS})
-
 find_package(Threads)
 message(STATUS "Threads found? ${THREAD_FOUND}")
 
