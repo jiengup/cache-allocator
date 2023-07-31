@@ -1,4 +1,4 @@
-_build
-build
+*_build*
+*build*
 .vscode
 dataset

@@ -1,1 +1,0 @@
-/usr/bin/g++ -g CMakeFiles/simulator.dir/allocation_simulator.cpp.o -o simulator  -Wl,-rpath,/root/cacheAllocation/build:/usr/local/lib -lpthread -ldl -lm /usr/local/lib/liblibCacheSim.so /usr/lib/x86_64-linux-gnu/libglib-2.0.so libcache_allocation.so /usr/local/lib/liblibCacheSim.so /usr/lib/x86_64-linux-gnu/libglib-2.0.so /usr/local/lib/liblibCacheSim.so 
