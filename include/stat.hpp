@@ -31,7 +31,7 @@ namespace CacheAllocation
         : server_id(server_id), req_cnt(0), hit_cnt(0)
     {
       obj_cnt = new std::unordered_set<uint64_t>();
-	  min_req = ULLONG_MAX;
+	    min_req = ULLONG_MAX;
     };
 
     static std::string stat_str_header()
@@ -78,7 +78,8 @@ namespace CacheAllocation
       req_cnt++;
       req_bytes += req->obj_size;
       max_req = std::max(max_req, (unsigned long long)req->obj_size);
-	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
+      if (req->obj_size != 0)
+	      min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
 
     inline void miss_record(const request_t *req)
@@ -91,7 +92,8 @@ namespace CacheAllocation
       req_cnt++;
       req_bytes += req->obj_size;
       max_req = std::max(max_req, (unsigned long long)req->obj_size);
-	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
+      if (req->obj_size != 0)
+	      min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
   };
 
@@ -156,7 +158,8 @@ namespace CacheAllocation
       cluster_req_cnt++;
       cluster_req_bytes += req->obj_size;
       max_req = std::max(max_req, (unsigned long long)req->obj_size);
-	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
+      if (req->obj_size != 0)
+	      min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
 
     inline void miss_record(const request_t *req)
@@ -169,7 +172,8 @@ namespace CacheAllocation
       cluster_req_cnt++;
       cluster_req_bytes += req->obj_size;
       max_req = std::max(max_req, (unsigned long long)req->obj_size);
-	  min_req = std::min(min_req, (unsigned long long)req->obj_size);
+      if (req->obj_size != 0)
+	      min_req = std::min(min_req, (unsigned long long)req->obj_size);
     }
   };
 } // namespace CacheAllocation
