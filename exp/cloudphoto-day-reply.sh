@@ -1,7 +1,5 @@
-
 #!/bin/bash
 
-# 遍历x从1到9的文件
 for x in {1..8}
 do
     trace_file="2016020${x}00-2016020$((x+1))00.csv_sort.csv"
