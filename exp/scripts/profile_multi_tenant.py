@@ -44,7 +44,7 @@ def split_trace(trace_file, tmp_files):
 def run_exp(trace_file):
     print("running on {}".format(trace_file))
     tmp_files, tmp_files_path = init()
-    # split_trace(trace_file, tmp_files)
+    split_trace(trace_file, tmp_files)
     trace_res_dir = os.path.join(profile_out_dir, trace_file.split(".")[0])
     if not os.path.exists(trace_res_dir):
         os.mkdir(trace_res_dir)
@@ -64,4 +64,3 @@ if __name__ == "__main__":
         if trace_file.endswith(".csv"):
             trace_file_path = os.path.join(trace_file_dir, trace_file)
             run_exp(trace_file_path)
-            exit(0)
