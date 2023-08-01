@@ -4,3 +4,5 @@
 *plots*
 exp/log*
 dataset
+third_party/flows/*.o
+third_party/flows/flows

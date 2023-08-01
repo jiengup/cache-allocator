@@ -139,7 +139,7 @@ public:
             // printf("%ld %ld %ld %ld\n", time_stamp, key, size, oth);
             key_size.push_back(make_pair(key, size));
             if(key_size.size() %1000000 ==0){
-                printf("read %ld lines\n", key_size.size());
+                // printf("read %ld lines\n", key_size.size());
             }
         }
         fclose(fp);

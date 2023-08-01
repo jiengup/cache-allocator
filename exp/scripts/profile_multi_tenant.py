@@ -37,13 +37,14 @@ def split_trace(trace_file, tmp_files):
             key = key.strip()
             tenant_id = int(tenant_id.strip())
             obj_size = obj_size.strip()
-            tmp_files[tenant_id-1].write("{},{},{}\n".format(timestamp, key, obj_size))
+            tmp_files[tenant_id-1].write("{},{},{},0\n".format(timestamp, key, obj_size))
     for tmp_file in tmp_files:
         tmp_file.close()
         
 def run_exp(trace_file):
+    print("running on {}".format(trace_file)
     tmp_files, tmp_files_path = init()
-    split_trace(trace_file, tmp_files)
+    # split_trace(trace_file, tmp_files)
     trace_res_dir = os.path.join(profile_out_dir, trace_file.split(".")[0])
     if not os.path.exists(trace_res_dir):
         os.mkdir(trace_res_dir)
@@ -52,16 +53,10 @@ def run_exp(trace_file):
             for method in methods:
                 for sample_rate in sample_rates:
                     profile_res_file = os.path.join(trace_res_dir, profile_res_file_base.format(num+1, sample_method, method, sample_rate))
-                    cmd = '''./opt/cache-allocation/third_party/flows/flow \
-                             -t {} \
-                             -o {} \
-                             --sample-method {} \
-                             --sample-metric {} \
-                             --method {} \
-                          '''
-                    cmd = cmd.format(tmp_file_path, profile_res_file, sample_method, sample_rate, method)
+                    cmd = "/opt/cache-allocation/third_party/flows/flows -t {} -o {} --sample_method {} --sample_metric {} --method {} >> {}"
+                    cmd = cmd.format(tmp_file_path, profile_res_file, sample_method, sample_rate, method, profile_res_file)
                     print(cmd)
-                    # subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     clean(tmp_files_path)
 
 if __name__ == "__main__":
@@ -69,3 +64,4 @@ if __name__ == "__main__":
         if trace_file.endswith(".csv"):
             trace_file_path = os.path.join(trace_file_dir, trace_file)
             run_exp(trace_file_path)
+            exit(0)
