@@ -106,7 +106,7 @@ namespace CacheAllocation
     unsigned long long cluster_hit_bytes = 0;
 
     unsigned long long max_req = 0;
-	unsigned long long min_req;
+	  unsigned long long min_req;
 
     std::unordered_set<uint64_t> *obj_cnt;
     unsigned long long working_set_bytes = 0;

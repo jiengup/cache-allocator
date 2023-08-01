@@ -1,5 +1,6 @@
 *_build*
 *build*
 *.vscode*
+*plots*
 exp/log*
 dataset
