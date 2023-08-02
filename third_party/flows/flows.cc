@@ -134,13 +134,14 @@ public:
         printf("open file %s\n", filename.c_str());
 
         char buf[1024];
-        int64_t time_stamp, key, size, oth;
+        int64_t time_stamp, size, oth;
+        string key;
         ;
         while(fscanf(fp, "%ld %ld %ld %ld", &time_stamp, &key, &size, &oth) != EOF){
             // printf("%ld %ld %ld %ld\n", time_stamp, key, size, oth);
             key_size.push_back(make_pair(key, size));
             if(key_size.size() %1000000 ==0){
-                // printf("read %ld lines\n", key_size.size());
+                printf("read %ld lines\n", key_size.size());
             }
         }
         fclose(fp);
@@ -1014,6 +1015,7 @@ int main(const int argc, char * argv[]){
     a.add<string>("method", 'm', "REAL/SHARDS/CARRA/FLOWS", false, "REAL");
     a.add<string>("metric", 'c', "MAE/MAEQ", false, "MAE");
     a.add<uint64_t>("seed", 'd', "random seed", false, 42);
+    a.add<string>("logpath", 'l', "logging file path leave blank if not necessary", false, "");
     
     a.parse_check(argc, argv);
     string tracefile = a.get<string>("trace");
@@ -1023,7 +1025,12 @@ int main(const int argc, char * argv[]){
     string method = a.get<string>("method");
     string metric = a.get<string>("metric");
     uint64_t seed = a.get<uint64_t>("seed");
+    string logpath = a.get<string>("logpath");
     g_hash_mask = hash_uint64(seed, 0);
+
+    if (logpath != "") {
+        freopen(logpath.c_str(), "w", stdout);
+	}
 
     out_file.open(output, ofstream::out | ofstream::trunc);
     printf("logging to %s", output.c_str());
@@ -1074,5 +1081,6 @@ int main(const int argc, char * argv[]){
     auto time_end = chrono::steady_clock::now();
     auto time_used = chrono::duration_cast<chrono::milliseconds>(time_end - time_start);
     cout << "Time used: " << time_used.count() << " ms" << endl;
+    fclose(stdout);
     return 0;
 }
