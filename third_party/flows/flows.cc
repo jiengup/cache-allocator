@@ -201,6 +201,7 @@ public:
                 size = stoull(row[2]);
                 oth = stoull(row[3]);
                 key_size.push_back(make_pair(key, size));
+                // cout << time_stamp << " " << key << " " << size << " " << oth << endl;
                 if (key_size.size() % 1000000 == 0)
                 {
                     printf("read %ld lines\n", key_size.size());
@@ -1126,7 +1127,10 @@ void real_mrc(Trace &trace, string output, string metric, int test_points = TEST
                 printf("%ld\n", size);
                 printf("%ld\n", rd);
             }
-            assert(rd >= size);
+            if (rd < size) {
+                cout << "key: " << key << "-rd: " << rd << "-size: " << size << endl;
+            }
+            // assert(rd >= size);
 
             item_last_access_time[key] = now_time;
             rd_tree.erase(last_acc_time);

@@ -2,10 +2,11 @@ import os
 import subprocess
 
 trace_file_dir = "/data1/cloud_photo"
-profile_out_dir = "/data1/profile_res"
+profile_out_dir = "/opt/profile_res"
 tmp_file_dir = "/data1/tmp"
 split_trace_file_base = "tenant_{}_trace"
 profile_res_file_base = "tenant_{}_profile_res-{}-{}-{}.csv"
+profile_log_file_base = "tenant_{}_profile_res-{}-{}-{}.log"
 
 sample_methods = ["FIX_RATE"]
 sample_rates = ["0.01"]
@@ -53,8 +54,9 @@ def run_exp(trace_file, res_dir):
             for method in methods:
                 for sample_rate in sample_rates:
                     profile_res_file = os.path.join(trace_res_dir, profile_res_file_base.format(num+1, sample_method, method, sample_rate))
-                    cmd = "/opt/cache-allocation/third_party/flows/flows -t {} -o {} --sample_method {} --sample_metric {} --method {}"
-                    cmd = cmd.format(tmp_file_path, profile_res_file, sample_method, sample_rate, method, profile_res_file)
+                    profile_log_file = os.path.join(trace_res_dir, profile_log_file_base.format(num+1, sample_method, method, sample_rate))
+                    cmd = 'sudo bash -c "/opt/cache-allocator/third_party/flows/flows -t {} -o {} --sample_method {} --sample_metric {} --method {} --logpath {} --tracetype CSV"'
+                    cmd = cmd.format(tmp_file_path, profile_res_file, sample_method, sample_rate, method, profile_log_file)
                     print(cmd)
                     subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     clean(tmp_files_path)
@@ -65,3 +67,4 @@ if __name__ == "__main__":
             res_dir = trace_file.split(".")[0]
             trace_file_path = os.path.join(trace_file_dir, trace_file)
             run_exp(trace_file_path, res_dir)
+            exit(0)
