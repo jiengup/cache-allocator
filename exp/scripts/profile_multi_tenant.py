@@ -41,11 +41,11 @@ def split_trace(trace_file, tmp_files):
     for tmp_file in tmp_files:
         tmp_file.close()
         
-def run_exp(trace_file):
+def run_exp(trace_file, res_dir):
     print("running on {}".format(trace_file))
     tmp_files, tmp_files_path = init()
     split_trace(trace_file, tmp_files)
-    trace_res_dir = os.path.join(profile_out_dir, trace_file.split(".")[0])
+    trace_res_dir = os.path.join(profile_out_dir, res_dir)
     if not os.path.exists(trace_res_dir):
         os.mkdir(trace_res_dir)
     for num, tmp_file_path in enumerate(tmp_files_path):
@@ -53,7 +53,7 @@ def run_exp(trace_file):
             for method in methods:
                 for sample_rate in sample_rates:
                     profile_res_file = os.path.join(trace_res_dir, profile_res_file_base.format(num+1, sample_method, method, sample_rate))
-                    cmd = "/opt/cache-allocation/third_party/flows/flows -t {} -o {} --sample_method {} --sample_metric {} --method {} > {}"
+                    cmd = "/opt/cache-allocation/third_party/flows/flows -t {} -o {} --sample_method {} --sample_metric {} --method {}"
                     cmd = cmd.format(tmp_file_path, profile_res_file, sample_method, sample_rate, method, profile_res_file)
                     print(cmd)
                     subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -62,5 +62,6 @@ def run_exp(trace_file):
 if __name__ == "__main__":
     for trace_file in os.listdir(trace_file_dir):
         if trace_file.endswith(".csv"):
+            res_dir = trace_file.split(".")[0]
             trace_file_path = os.path.join(trace_file_dir, trace_file)
-            run_exp(trace_file_path)
+            run_exp(trace_file_path, res_dir)

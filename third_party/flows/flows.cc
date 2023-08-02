@@ -53,6 +53,7 @@ using namespace std;
 
 #define TEST_POINT_NUM 100
 uint64_t g_hash_mask = 0;
+ofstream out_file;
 
 uint64_t hash_uint64(uint64_t x, uint64_t seed) {
     x ^= seed;
@@ -996,12 +997,12 @@ void real_mrc(Trace &trace, string output, string metric, int test_points = TEST
         BMRC_ratio[i] = min(1.0, 1.0 - (double)BMRC_hist[i] / trace.total_access_size);
         OMRC_ratio[i] = min(1.0, 1.0 - (double)OMRC_hist[i] / trace.total_access_num);
     }
-
+    out_file << "cache_size, BMRC_ratio, OMRC_ratio" << endl;
     printf("cache_size, BMRC_ratio, OMRC_ratio\n");
     for(int i = 0; i < test_points; i++){
+        out_file << (is_MAE ? trace.get_MAE_bin_size(i, test_points):trace.get_MAEQ_bin_size(i,test_points)) << ", " << BMRC_ratio[i] << ", " << OMRC_ratio[i] << endl;
         printf("%ld, %lf, %lf\n", is_MAE ? trace.get_MAE_bin_size(i, test_points):trace.get_MAEQ_bin_size(i,test_points), BMRC_ratio[i], OMRC_ratio[i]);
     }
-  
 }
 
 int main(const int argc, char * argv[]){
@@ -1023,6 +1024,9 @@ int main(const int argc, char * argv[]){
     string metric = a.get<string>("metric");
     uint64_t seed = a.get<uint64_t>("seed");
     g_hash_mask = hash_uint64(seed, 0);
+
+    out_file.open(output, ofstream::out | ofstream::trunc);
+    printf("logging to %s", output.c_str());
 
     printf("tracefile: %s\n", tracefile.c_str());
     Trace trace(tracefile);
