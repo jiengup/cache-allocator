@@ -1,5 +1,8 @@
 import os
 
+origin_trace_dir = "/data1/cloud_photo"
+out_trace_dir = "/data2/cloud_photo"
+
 def run_trace(trace_file, out_file):
     tenant_req = {
         "1": {},
@@ -43,6 +46,11 @@ def run_trace(trace_file, out_file):
                 fout.write("{},{},{},{}\n".format(timestamp, key, tenant_id, tenant_req[tenant_id][key]["max_item"]))
     
 if __name__ == "__main__":
-    trace_file_dir = "../dataset/cloud_photos-sample/cloud_photos-sample.csv"
-    out_file_dir = "../dataset/cloud_photos-sample/cloud_photos-sample_unique_size.csv"
-    run_trace(trace_file_dir, out_file_dir)
+    for origin_trace in os.listdir(origin_trace_dir):
+        if "csv" not in origin_trace:
+            continue
+        print("running on {}".format(origin_trace))
+        origin_trace_file = os.path.join(origin_trace_dir, origin_trace)
+        out_trace_file = os.path.join(out_trace_dir, origin_trace.split(".")[0]+"_unique"+".csv")
+        print("writing to {}".format(out_trace_file))
+        run_trace(origin_trace_file, out_trace_file)

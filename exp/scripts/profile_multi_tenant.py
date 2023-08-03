@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-trace_file_dir = "/data1/cloud_photo"
+trace_file_dir = "/data2/cloud_photo"
 profile_out_dir = "/opt/profile_res"
 tmp_file_dir = "/data1/tmp"
 split_trace_file_base = "tenant_{}_trace"
@@ -67,4 +67,4 @@ if __name__ == "__main__":
             res_dir = trace_file.split(".")[0]
             trace_file_path = os.path.join(trace_file_dir, trace_file)
             run_exp(trace_file_path, res_dir)
-            exit(0)
+            # exit(0)
