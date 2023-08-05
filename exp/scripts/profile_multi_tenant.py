@@ -30,25 +30,31 @@ def clean(tmp_files_path):
         os.remove(tmp_file_path)
 
 def split_trace(trace_file, tmp_files):
+    cnt = 0
     with open(trace_file, "r") as f:
         f.readline()
         for line in f:
+            cnt += 1
             timestamp, key, tenant_id, obj_size = line.strip().split(",")
             timestamp = timestamp.strip()
             key = key.strip()
             tenant_id = int(tenant_id.strip())
             obj_size = obj_size.strip()
             tmp_files[tenant_id-1].write("{},{},{},0\n".format(timestamp, key, obj_size))
+#            if cnt % 100000 == 0:
+#                print("read {} lines".format(cnt))
     for tmp_file in tmp_files:
         tmp_file.close()
         
 def run_exp(trace_file, res_dir):
     print("running on {}".format(trace_file))
     tmp_files, tmp_files_path = init()
-    split_trace(trace_file, tmp_files)
     trace_res_dir = os.path.join(profile_out_dir, res_dir)
     if not os.path.exists(trace_res_dir):
         os.mkdir(trace_res_dir)
+    else:
+        return
+    split_trace(trace_file, tmp_files)
     for num, tmp_file_path in enumerate(tmp_files_path):
         for sample_method in sample_methods:
             for method in methods:
