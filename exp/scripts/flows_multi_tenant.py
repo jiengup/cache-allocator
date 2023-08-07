@@ -3,7 +3,7 @@ import subprocess
 import concurrent.futures
 
 trace_file_dir = "/data1/tenant_trace"
-profile_out_dir = "/data1/flows_res"
+profile_out_dir = "/opt/flows_res_1000"
 split_trace_file_base = "tenant_{}_trace"
 profile_res_file_base = "tenant_{}_profile_res-{}-{}-{}.csv"
 profile_log_file_base = "tenant_{}_profile_res-{}-{}-{}.log"

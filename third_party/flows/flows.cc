@@ -51,7 +51,7 @@ data sample:
 #include "LRU_fix_count.h"
 using namespace std;
 
-#define TEST_POINT_NUM 100
+#define TEST_POINT_NUM 1000
 uint64_t g_hash_mask = 0;
 ofstream out_file;
 
