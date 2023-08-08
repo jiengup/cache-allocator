@@ -10,6 +10,7 @@
 #include "cache_server.hpp"
 #include "cache_cluster.hpp"
 #include "const.hpp"
+#include "args.hpp"
 
 namespace CacheAllocation
 {

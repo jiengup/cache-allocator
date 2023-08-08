@@ -9,7 +9,7 @@ namespace CacheAllocation
         ofilename = args->log_folder + "/" + args->exp_name + ".vlog";
         log_ofstream.open(ofilename, std::ofstream::out | std::ofstream::trunc);
 
-        this->reader = open_trace(args->trace_file_path.c_str(),
+        this->reader = open_trace(args->input_file_path.c_str(),
                                       args->reader_type, 
                                       &args->reader_init_params);
         
@@ -28,7 +28,7 @@ namespace CacheAllocation
             this->cache_cluster = 
                 new CacheCluster(1, 
                                  args->exp_name, 
-                                 args->trace_file_path, 
+                                 args->input_file_path, 
                                  cache_servers, 
                                  args->n_server, 
                                  args->cache_algo, 
@@ -77,10 +77,19 @@ void run_exp(int argc, char *argv[])
     }
     args.param_string.pop_back();
     args.param_string += "\n";
-    if (ok) 
+    if (!ok)
+    {
+        ERROR("parse command parameters failed!");
+        abort();
+    }
+    if (args.task_type == "reply")
     {
         CacheAllocation::ExpRunner *exp_runner = new CacheAllocation::ExpRunner(&args);
         exp_runner->run_replay();
+    }
+    else if (args.task_type == "dp-solve")
+    {
+        
     }
 }
 
