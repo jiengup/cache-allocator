@@ -1,8 +1,9 @@
 # %%
 import pandas as pd
-import numpy as np
 import bisect
 import os
+
+res_root_dir = "/root/cacheAllocation/result/flows_res_1000"
 # %%
 def find_first_greater_equal(arr, x):
     index = bisect.bisect_right(arr, x)
@@ -12,7 +13,6 @@ def find_first_greater_equal(arr, x):
         return len(arr)
 # %%
 GB_base = 1024 * 1024 * 1024
-result_file = "/root/cacheAllocation/result/flows_res/2016020200-2016020300_unique/tenant_4_profile_res-FIX_RATE-FLOWS-0.01.csv"
 # %%
 def linear_interpolation(result_file):
     result_df = pd.read_csv(result_file, skipinitialspace=True)
@@ -22,7 +22,7 @@ def linear_interpolation(result_file):
     cache_size.extend(result_df['cache_size'].to_list())
     bmrc_ratio.extend(result_df['BMRC_ratio'].to_list())
     omrc_ratio.extend(result_df['OMRC_ratio'].to_list())
-    inter_result_f_path = os.path.join(os.path.dirname(result_file), result_file.split("/")[-1].split(".")[0] + "_inter.csv")
+    inter_result_f_path = os.path.join(os.path.dirname(result_file), result_file.split("/")[-1].split(".csv")[0] + "_inter.csv")
     with open(inter_result_f_path, "w") as f:
         f.write("cache_size,BMRC_ratio,OMRC_ratio\n")
         for i in range(1, 3073):
@@ -39,5 +39,10 @@ def linear_interpolation(result_file):
                 inter_omrc_ratio = smaller_omrc_ratio + (inter_cache_size - cache_size[first_bigger_index - 1]) / (cache_size[first_bigger_index] - cache_size[first_bigger_index - 1]) * (bigger_omrc_ratio - smaller_omrc_ratio)
                 f.write("{},{:.6f},{:.6f}\n".format(inter_cache_size, inter_bmrc_ratio, inter_omrc_ratio))
 # %%
-linear_interpolation(result_file)
-# %%
+for res_dir_f in os.listdir(res_root_dir):
+    if os.path.isdir(os.path.join(res_root_dir, res_dir_f)):
+        res_dir = os.path.join(res_root_dir, res_dir_f)
+        for res_f in os.listdir(res_dir):
+            if res_f.endswith(".csv"):
+                res_file = os.path.join(res_dir, res_f)
+                linear_interpolation(res_file)
