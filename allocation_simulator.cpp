@@ -1,5 +1,4 @@
 #include "allocation_simulator.hpp"
-#include "cxxopts.hpp"
 
 namespace CacheAllocation
 {

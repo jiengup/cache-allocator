@@ -6,11 +6,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "cxxopts.hpp"
 #include "cache_server.hpp"
 #include "cache_cluster.hpp"
 #include "const.hpp"
-#include "args.hpp"
+#include "dp_solver.hpp"
 
 namespace CacheAllocation
 {

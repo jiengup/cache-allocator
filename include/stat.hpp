@@ -1,7 +1,7 @@
 #ifndef STAT_HPP
 #define STAT_HPP
 
-#include "libCacheSim.h"
+#include <libCacheSim.h>
 #include <string>
 #include <sstream>
 #include <unordered_set>

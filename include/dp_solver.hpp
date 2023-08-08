@@ -1,5 +1,5 @@
 #ifndef DP_SOLVER_HPP
-#define EP_SOLVER_HPP
+#define DP_SOLVER_HPP
 
 #include <string>
 #include <libCacheSim.h>

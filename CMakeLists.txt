@@ -36,4 +36,4 @@ message(STATUS "Building with tests")
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 
 add_executable(simulator allocation_simulator.cpp)
-target_link_libraries(simulator ${PROJECT_NAME} ${LIBS})
+target_link_libraries(simulator ${LIBS})
