@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(cache_allocation)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -36,4 +36,4 @@ message(STATUS "Building with tests")
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 
 add_executable(simulator allocation_simulator.cpp)
-target_link_libraries(simulator ${LIBS})
+target_link_libraries(simulator ${PROJECT_NAME} ${LIBS})

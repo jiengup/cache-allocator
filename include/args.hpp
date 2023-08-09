@@ -27,10 +27,11 @@ namespace CacheAllocation
     unsigned long log_interval;
 
     std::string task_type;
+    std::string traffic_file_path;
   } allocation_arg_t;
 } // namespace CacheAllocation
 
-long convert_size(std::string str_size)
+inline long convert_size(std::string str_size)
 {
   if (std::isalpha(str_size.back()))
   {
@@ -61,7 +62,7 @@ long convert_size(std::string str_size)
   }
 }
 
-std::vector<std::string> mysplit(const std::string& str, const std::string& delimiter) {
+inline std::vector<std::string> mysplit(const std::string& str, const std::string& delimiter) {
   std::vector<std::string> tokens;
   std::string str_copy = str; // make a copy of the string
   size_t pos = 0;
@@ -75,7 +76,7 @@ std::vector<std::string> mysplit(const std::string& str, const std::string& deli
   return tokens;
 }
 
-bool parse_cmd_arg(int argc, char *argv[],
+inline bool parse_cmd_arg(int argc, char *argv[],
                    CacheAllocation::allocation_arg_t *sargs)
 {
 
@@ -109,7 +110,8 @@ bool parse_cmd_arg(int argc, char *argv[],
       ("t,trace-type", "the type of trace[akamai1b/cloudphoto]", cxxopts::value<std::string>(sargs->trace_type))
       ("l,log-internal", "the log output interval in virtual time", cxxopts::value<unsigned long>(sargs->log_interval))
       ("o,log-folder", "path of the output folder", cxxopts::value<std::string>(sargs->log_folder))
-      ("t,task-type", "[reply/dp-solve]", cxxopts::value<std::string>(sargs->task_type)->default_value("reply"))
+      ("task-type", "[reply/dp-solve]", cxxopts::value<std::string>(sargs->task_type)->default_value("reply"))
+      ("traffic-file-path", "traffic stat file path", cxxopts::value<std::string>(sargs->traffic_file_path))
     ;
 
     auto result = options.parse(argc, argv);
@@ -122,9 +124,9 @@ bool parse_cmd_arg(int argc, char *argv[],
 
     if (sargs->task_type == "dp-solve")
     {
-      if (result.count("input-file-path") == 0)
+      if (!result.count("input-file-path") || !result.count("traffic-file-path"))
       {
-        std::cerr << "input file path is required for dp-solve task" << std::endl;
+        ERROR("input file path is and traffic file path are required for dp-solve task")
         return false;
       }
       return true;

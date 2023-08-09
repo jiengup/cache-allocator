@@ -88,7 +88,9 @@ void run_exp(int argc, char *argv[])
     }
     else if (args.task_type == "dp-solve")
     {
-        
+        CacheAllocation::DPSolver *dp_solver = new CacheAllocation::DPSolver(&args);
+        dp_solver->solve();
+        dp_solver->print_optimal_solution();
     }
 }
 
